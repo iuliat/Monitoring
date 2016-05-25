@@ -12,7 +12,16 @@ namespace ControllerAPI.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        Name = c.String(unicode: false),
+                        IP = c.String(unicode: false),
+                    })
+                .PrimaryKey(t => t.ID);
+            
+            CreateTable(
+                "dbo.Controllers",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        IP = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -20,6 +29,7 @@ namespace ControllerAPI.Migrations
         
         public override void Down()
         {
+            DropTable("dbo.Controllers");
             DropTable("dbo.Hosts");
         }
     }

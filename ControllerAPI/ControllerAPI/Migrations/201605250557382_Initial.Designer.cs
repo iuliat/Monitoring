@@ -13,7 +13,7 @@ namespace ControllerAPI.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201605112244290_Initial"; }
+            get { return "201605250557382_Initial"; }
         }
         
         string IMigrationMetadata.Source

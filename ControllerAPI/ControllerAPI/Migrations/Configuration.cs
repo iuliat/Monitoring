@@ -31,12 +31,17 @@ namespace ControllerAPI.Migrations
             //    );
             //
             context.Hosts.AddOrUpdate(new Host[] {
-                new Host() { ID = 1, Name = "Hat" },
-                new Host() { ID = 2, Name = "Socks" },
-                new Host() { ID = 3, Name = "Scarf" },
-                new Host() { ID = 4, Name = "Yo-yo" },
-                new Host() { ID = 5, Name = "Puzzle" },
+                new Host() { ID = 1, IP = "192.168.199.10" },
+                new Host() { ID = 2, IP = "192.168.199.22" },
+
             });
+
+            context.Hosts.AddOrUpdate(new Controller[]) {
+                new Controller() {ID='1' },
+                new Controller() { ID = '11' },
+
+            });
+
         }
     }
 }

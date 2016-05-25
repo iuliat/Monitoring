@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ControllerAPI.Models
 {
-    public class Host
+    public class Controller
     {
         [Key]
         public int ID { get; set; }

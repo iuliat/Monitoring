@@ -13,6 +13,9 @@ namespace ControllerAPI
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            Run application = new Run();
+            application.RunProgram();
         }
+
     }
 }

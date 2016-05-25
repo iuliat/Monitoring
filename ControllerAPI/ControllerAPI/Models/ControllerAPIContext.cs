@@ -15,12 +15,13 @@ namespace ControllerAPI.Models
         // automatically whenever you change your model schema, please use data migrations.
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
-    
-            
+
+
         public ControllerAPIContext() : base("name=ControllerAPIContext")
         {
         }
 
         public System.Data.Entity.DbSet<ControllerAPI.Models.Host> Hosts { get; set; }
+        public System.Data.Entity.DbSet<ControllerAPI.Models.Controller> Tests { get; set; }
     }
 }

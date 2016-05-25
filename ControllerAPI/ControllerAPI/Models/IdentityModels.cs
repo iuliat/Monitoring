@@ -29,5 +29,9 @@ namespace ControllerAPI.Models
         {
             return new ApplicationDbContext();
         }
+
+        //public System.Data.Entity.DbSet<ControllerAPI.Models.AMQPConnection> AMQPConnections { get; set; }
+
+        //public System.Data.Entity.DbSet<ControllerAPI.Models.Controller> Tests { get; set; }
     }
 }
