@@ -52,7 +52,7 @@ namespace Agent
 
                         Console.WriteLine(" [.] ram: {0}", message);
                         response2 = this.getResources();
-                        //response = getAvailableRAM().ToString();
+
                     }
                     catch (Exception e)
                     {

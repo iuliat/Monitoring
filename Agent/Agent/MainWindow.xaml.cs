@@ -28,12 +28,10 @@ namespace Agent
                 var RAMAgent = new RAMAgent();
                 RAMAgent.start();
 
-                //var CPUAgent = new CPUAgent();
-                //CPUAgent.start();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("error:" + ex.Message);
+                Console.WriteLine("error:" + ex.Message)
             }
 
 

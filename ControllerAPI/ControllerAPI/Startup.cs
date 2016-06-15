@@ -28,7 +28,6 @@ namespace ControllerAPI
                 Console.WriteLine("error:" + ex.Message);
             }
 
-            //      Console.WriteLine(" [.] Got '{0}'", response);
         }
 
     }
