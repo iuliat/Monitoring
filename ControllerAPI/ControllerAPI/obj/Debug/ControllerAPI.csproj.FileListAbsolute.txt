@@ -230,6 +230,6 @@ C:\Users\Iulia\Desktop\Monitoring\ControllerAPI\ControllerAPI\bin\zh-Hant\System
 C:\Users\Iulia\Desktop\Monitoring\ControllerAPI\ControllerAPI\obj\Debug\ControllerAPI.dll
 C:\Users\Iulia\Desktop\Monitoring\ControllerAPI\ControllerAPI\obj\Debug\ControllerAPI.pdb
 C:\Users\Iulia\Desktop\Monitoring\ControllerAPI\ControllerAPI\bin\System.Data.dll
-C:\Users\Iulia\Desktop\Monitoring\ControllerAPI\ControllerAPI\obj\Debug\ControllerAPI.Migrations.Initial.resources
+C:\Users\Iulia\Desktop\Monitoring\ControllerAPI\ControllerAPI\obj\Debug\ControllerAPI.Migrations.Initial11.resources
 C:\Users\Iulia\Desktop\Monitoring\ControllerAPI\ControllerAPI\obj\Debug\ControllerAPI.csproj.GenerateResource.Cache
 C:\Users\Iulia\Desktop\Monitoring\ControllerAPI\ControllerAPI\obj\Debug\ControllerAPI.csprojResolveAssemblyReference.cache

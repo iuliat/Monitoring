@@ -19,6 +19,9 @@ namespace ControllerAPI
             // entityset<model>("controller")
             builder.EntitySet<Host>("Hosts");
             builder.EntitySet<Controller>("Controllers");
+            builder.EntitySet<Metrics>("Metrics");
+            builder.EntitySet<CPU>("CPUs");
+            builder.EntitySet<RAM>("RAMs");
             config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
         }
 

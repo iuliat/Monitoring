@@ -29,18 +29,38 @@ namespace ControllerAPI.Migrations
             //      new Person { FullName = "Brice Lambson" },
             //      new Person { FullName = "Rowan Miller" }
             //    );
-            //
+            ////
             context.Hosts.AddOrUpdate(new Host[] {
-                new Host() { ID = 1, IP = "192.168.199.10" },
-                new Host() { ID = 2, IP = "192.168.199.22" },
+                new Host() {  IP = "192.168.199.10" , ControllerID = 1, MetricID=1},
+                new Host() {  IP = "192.168.199.22" , ControllerID = 1, MetricID=2},
 
             });
 
-            context.Hosts.AddOrUpdate(new Controller[]) {
-                new Controller() {ID='1' },
-                new Controller() { ID = '11' },
+            context.Controllers.AddOrUpdate(new Controller[] {
+                new Controller() {ControllerID = 1, IP = "127.0.0.1"  },
+                new Controller() { ControllerID = 2, IP = "127.0.0.1"  },
 
             });
+
+            context.Metrics.AddOrUpdate(new Metrics[] {
+                new Metrics() {  MetricID=1},
+                new Metrics() {  MetricID=2},
+
+            });
+
+            //context.Metrics.AddOrUpdate(new Metrics[] {
+            //    new Metrics() {CPURefId = '1', RAMRefId='1'  },
+            //});
+
+            //context.CPUs.AddOrUpdate(new CPU[] {
+            //    new CPU() { Value=123  },
+            //});
+
+            //context.RAMs.AddOrUpdate(new RAM[] {
+            //    new RAM() { Value=13  },
+            //});
+
+
 
         }
     }

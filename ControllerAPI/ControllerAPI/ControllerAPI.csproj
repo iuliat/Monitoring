@@ -201,7 +201,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AMQP\AMQPConnection.cs" />
+    <Compile Include="AMQP\AgentConsumer.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -237,23 +237,29 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ControllersController.cs" />
+    <Compile Include="Controllers\CPUsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HostsController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\MetricsController.cs" />
+    <Compile Include="Controllers\RAMsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605250557382_Initial.cs" />
-    <Compile Include="Migrations\201605250557382_Initial.Designer.cs">
-      <DependentUpon>201605250557382_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201606131722257_Initial11.cs" />
+    <Compile Include="Migrations\201606131722257_Initial11.Designer.cs">
+      <DependentUpon>201606131722257_Initial11.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ControllerAPIContext.cs" />
+    <Compile Include="Models\CPU.cs" />
     <Compile Include="Models\Host.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Controller.cs" />
+    <Compile Include="Models\Metrics.cs" />
+    <Compile Include="Models\RAM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -327,8 +333,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605250557382_Initial.resx">
-      <DependentUpon>201605250557382_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606131722257_Initial11.resx">
+      <DependentUpon>201606131722257_Initial11.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

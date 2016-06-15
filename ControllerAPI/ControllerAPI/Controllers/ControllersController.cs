@@ -22,31 +22,30 @@ namespace ControllerAPI.Controllers
     using System.Web.Http.OData.Extensions;
     using ControllerAPI.Models;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<Host>("Hosts");
-    builder.EntitySet<Controller>("Controllers"); 
-    builder.EntitySet<Metrics>("Metrics"); 
+    builder.EntitySet<Controller>("Controllers");
+    builder.EntitySet<Host>("Hosts"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
-    public class HostsController : ODataController
+    public class ControllersController : ODataController
     {
         private ControllerAPIContext db = new ControllerAPIContext();
 
-        // GET: odata/Hosts
+        // GET: odata/Controllers
         [EnableQuery]
-        public IQueryable<Host> GetHosts()
+        public IQueryable<Controller> GetControllers()
         {
-            return db.Hosts;
+            return db.Controllers;
         }
 
-        // GET: odata/Hosts(5)
+        // GET: odata/Controllers(5)
         [EnableQuery]
-        public SingleResult<Host> GetHost([FromODataUri] int key)
+        public SingleResult<Controller> GetController([FromODataUri] int key)
         {
-            return SingleResult.Create(db.Hosts.Where(host => host.HostID == key));
+            return SingleResult.Create(db.Controllers.Where(controller => controller.ControllerID == key));
         }
 
-        // PUT: odata/Hosts(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<Host> patch)
+        // PUT: odata/Controllers(5)
+        public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<Controller> patch)
         {
             Validate(patch.GetEntity());
 
@@ -55,13 +54,13 @@ namespace ControllerAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            Host host = await db.Hosts.FindAsync(key);
-            if (host == null)
+            Controller controller = await db.Controllers.FindAsync(key);
+            if (controller == null)
             {
                 return NotFound();
             }
 
-            patch.Put(host);
+            patch.Put(controller);
 
             try
             {
@@ -69,7 +68,7 @@ namespace ControllerAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HostExists(key))
+                if (!ControllerExists(key))
                 {
                     return NotFound();
                 }
@@ -79,26 +78,26 @@ namespace ControllerAPI.Controllers
                 }
             }
 
-            return Updated(host);
+            return Updated(controller);
         }
 
-        // POST: odata/Hosts
-        public async Task<IHttpActionResult> Post(Host host)
+        // POST: odata/Controllers
+        public async Task<IHttpActionResult> Post(Controller controller)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Hosts.Add(host);
+            db.Controllers.Add(controller);
             await db.SaveChangesAsync();
 
-            return Created(host);
+            return Created(controller);
         }
 
-        // PATCH: odata/Hosts(5)
+        // PATCH: odata/Controllers(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Host> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Controller> patch)
         {
             Validate(patch.GetEntity());
 
@@ -107,13 +106,13 @@ namespace ControllerAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            Host host = await db.Hosts.FindAsync(key);
-            if (host == null)
+            Controller controller = await db.Controllers.FindAsync(key);
+            if (controller == null)
             {
                 return NotFound();
             }
 
-            patch.Patch(host);
+            patch.Patch(controller);
 
             try
             {
@@ -121,7 +120,7 @@ namespace ControllerAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HostExists(key))
+                if (!ControllerExists(key))
                 {
                     return NotFound();
                 }
@@ -131,36 +130,29 @@ namespace ControllerAPI.Controllers
                 }
             }
 
-            return Updated(host);
+            return Updated(controller);
         }
 
-        // DELETE: odata/Hosts(5)
+        // DELETE: odata/Controllers(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            Host host = await db.Hosts.FindAsync(key);
-            if (host == null)
+            Controller controller = await db.Controllers.FindAsync(key);
+            if (controller == null)
             {
                 return NotFound();
             }
 
-            db.Hosts.Remove(host);
+            db.Controllers.Remove(controller);
             await db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: odata/Hosts(5)/Controller
+        // GET: odata/Controllers(5)/hosts
         [EnableQuery]
-        public SingleResult<Controller> GetController([FromODataUri] int key)
+        public IQueryable<Host> Gethosts([FromODataUri] int key)
         {
-            return SingleResult.Create(db.Hosts.Where(m => m.HostID == key).Select(m => m.Controller));
-        }
-
-        // GET: odata/Hosts(5)/Metrics
-        [EnableQuery]
-        public SingleResult<Metrics> GetMetrics([FromODataUri] int key)
-        {
-            return SingleResult.Create(db.Hosts.Where(m => m.HostID == key).Select(m => m.Metrics));
+            return db.Controllers.Where(m => m.ControllerID == key).SelectMany(m => m.hosts);
         }
 
         protected override void Dispose(bool disposing)
@@ -172,9 +164,9 @@ namespace ControllerAPI.Controllers
             base.Dispose(disposing);
         }
 
-        private bool HostExists(int key)
+        private bool ControllerExists(int key)
         {
-            return db.Hosts.Count(e => e.HostID == key) > 0;
+            return db.Controllers.Count(e => e.ControllerID == key) > 0;
         }
     }
 }

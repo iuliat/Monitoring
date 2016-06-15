@@ -22,31 +22,32 @@ namespace ControllerAPI.Controllers
     using System.Web.Http.OData.Extensions;
     using ControllerAPI.Models;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<Host>("Hosts");
-    builder.EntitySet<Controller>("Controllers"); 
-    builder.EntitySet<Metrics>("Metrics"); 
+    builder.EntitySet<Metrics>("Metrics");
+    builder.EntitySet<CPU>("CPUs"); 
+    builder.EntitySet<Host>("Hosts"); 
+    builder.EntitySet<RAM>("RAMs"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
-    public class HostsController : ODataController
+    public class MetricsController : ODataController
     {
         private ControllerAPIContext db = new ControllerAPIContext();
 
-        // GET: odata/Hosts
+        // GET: odata/Metrics
         [EnableQuery]
-        public IQueryable<Host> GetHosts()
+        public IQueryable<Metrics> GetMetrics()
         {
-            return db.Hosts;
+            return db.Metrics;
         }
 
-        // GET: odata/Hosts(5)
+        // GET: odata/Metrics(5)
         [EnableQuery]
-        public SingleResult<Host> GetHost([FromODataUri] int key)
+        public SingleResult<Metrics> GetMetrics([FromODataUri] int key)
         {
-            return SingleResult.Create(db.Hosts.Where(host => host.HostID == key));
+            return SingleResult.Create(db.Metrics.Where(metrics => metrics.MetricID == key));
         }
 
-        // PUT: odata/Hosts(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<Host> patch)
+        // PUT: odata/Metrics(5)
+        public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<Metrics> patch)
         {
             Validate(patch.GetEntity());
 
@@ -55,13 +56,13 @@ namespace ControllerAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            Host host = await db.Hosts.FindAsync(key);
-            if (host == null)
+            Metrics metrics = await db.Metrics.FindAsync(key);
+            if (metrics == null)
             {
                 return NotFound();
             }
 
-            patch.Put(host);
+            patch.Put(metrics);
 
             try
             {
@@ -69,7 +70,7 @@ namespace ControllerAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HostExists(key))
+                if (!MetricsExists(key))
                 {
                     return NotFound();
                 }
@@ -79,26 +80,26 @@ namespace ControllerAPI.Controllers
                 }
             }
 
-            return Updated(host);
+            return Updated(metrics);
         }
 
-        // POST: odata/Hosts
-        public async Task<IHttpActionResult> Post(Host host)
+        // POST: odata/Metrics
+        public async Task<IHttpActionResult> Post(Metrics metrics)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Hosts.Add(host);
+            db.Metrics.Add(metrics);
             await db.SaveChangesAsync();
 
-            return Created(host);
+            return Created(metrics);
         }
 
-        // PATCH: odata/Hosts(5)
+        // PATCH: odata/Metrics(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Host> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Metrics> patch)
         {
             Validate(patch.GetEntity());
 
@@ -107,13 +108,13 @@ namespace ControllerAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            Host host = await db.Hosts.FindAsync(key);
-            if (host == null)
+            Metrics metrics = await db.Metrics.FindAsync(key);
+            if (metrics == null)
             {
                 return NotFound();
             }
 
-            patch.Patch(host);
+            patch.Patch(metrics);
 
             try
             {
@@ -121,7 +122,7 @@ namespace ControllerAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HostExists(key))
+                if (!MetricsExists(key))
                 {
                     return NotFound();
                 }
@@ -131,36 +132,43 @@ namespace ControllerAPI.Controllers
                 }
             }
 
-            return Updated(host);
+            return Updated(metrics);
         }
 
-        // DELETE: odata/Hosts(5)
+        // DELETE: odata/Metrics(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            Host host = await db.Hosts.FindAsync(key);
-            if (host == null)
+            Metrics metrics = await db.Metrics.FindAsync(key);
+            if (metrics == null)
             {
                 return NotFound();
             }
 
-            db.Hosts.Remove(host);
+            db.Metrics.Remove(metrics);
             await db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: odata/Hosts(5)/Controller
+        // GET: odata/Metrics(5)/CPUs
         [EnableQuery]
-        public SingleResult<Controller> GetController([FromODataUri] int key)
+        public IQueryable<CPU> GetCPUs([FromODataUri] int key)
         {
-            return SingleResult.Create(db.Hosts.Where(m => m.HostID == key).Select(m => m.Controller));
+            return db.Metrics.Where(m => m.MetricID == key).SelectMany(m => m.CPUs);
         }
 
-        // GET: odata/Hosts(5)/Metrics
+        // GET: odata/Metrics(5)/hosts
         [EnableQuery]
-        public SingleResult<Metrics> GetMetrics([FromODataUri] int key)
+        public IQueryable<Host> Gethosts([FromODataUri] int key)
         {
-            return SingleResult.Create(db.Hosts.Where(m => m.HostID == key).Select(m => m.Metrics));
+            return db.Metrics.Where(m => m.MetricID == key).SelectMany(m => m.hosts);
+        }
+
+        // GET: odata/Metrics(5)/RAMs
+        [EnableQuery]
+        public IQueryable<RAM> GetRAMs([FromODataUri] int key)
+        {
+            return db.Metrics.Where(m => m.MetricID == key).SelectMany(m => m.RAMs);
         }
 
         protected override void Dispose(bool disposing)
@@ -172,9 +180,9 @@ namespace ControllerAPI.Controllers
             base.Dispose(disposing);
         }
 
-        private bool HostExists(int key)
+        private bool MetricsExists(int key)
         {
-            return db.Hosts.Count(e => e.HostID == key) > 0;
+            return db.Metrics.Count(e => e.MetricID == key) > 0;
         }
     }
 }

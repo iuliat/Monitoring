@@ -22,6 +22,9 @@ namespace ControllerAPI.Models
         }
 
         public System.Data.Entity.DbSet<ControllerAPI.Models.Host> Hosts { get; set; }
-        public System.Data.Entity.DbSet<ControllerAPI.Models.Controller> Tests { get; set; }
+        public System.Data.Entity.DbSet<ControllerAPI.Models.Controller> Controllers { get; set; }
+        public System.Data.Entity.DbSet<ControllerAPI.Models.CPU> CPUs { get; set; }
+        public System.Data.Entity.DbSet<ControllerAPI.Models.RAM> RAMs { get; set; }
+        public System.Data.Entity.DbSet<ControllerAPI.Models.Metrics> Metrics { get; set; }
     }
 }

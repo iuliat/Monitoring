@@ -11,11 +11,13 @@ namespace ControllerAPI
     {
         public void RunProgram()
         {
-            var rpcClient = new AMQPConnection();
+            //var rpcClient = new AgentConsumer();
 
-            Console.WriteLine(" [x] Requesting fib(30)");
-            var response = rpcClient.Call("30");
-            Console.WriteLine(" [.] Got '{0}'", response);
+            //Console.WriteLine(" [x] Requesting fib(30)");
+            //var response = rpcClient.Call("30");
+            //Console.WriteLine(" [x] Requesting ram)");
+            //var response = rpcClient.Call("ram");
+            //Console.WriteLine(" [.] Got '{0}'", response);
 
             //rpcClient.Close();
         }
