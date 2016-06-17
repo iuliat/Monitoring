@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,6 +99,29 @@ namespace Agent
             return fib(n - 1) + fib(n - 2);
         }
 
+        public static List<String> GetLocalIPAddress()
+        {
+            List<String> IPv4s = new List<String>();
+
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            {
+                throw new Exception("No network connection is available.");
+            }
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            // host.Hostname
+
+
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    IPv4s.Add(ip.ToString());
+                }
+            }
+
+            throw new Exception("Local IP Address Not Found!");
+        }
 
     }
 }

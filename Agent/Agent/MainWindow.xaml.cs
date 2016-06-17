@@ -25,13 +25,14 @@ namespace Agent
             InitializeComponent();
             try
             {
+                var asd =  AgentModel.GetLocalIPAddress();
                 var RAMAgent = new RAMAgent();
                 RAMAgent.start();
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine("error:" + ex.Message)
+                Console.WriteLine("error:" + ex.Message);
             }
 
 
