@@ -22,7 +22,7 @@ namespace PrincipalAPI
 
             try
             {
-                var rpcClient = new PrincipalAPI.AMQP.Principal("user", "Passw0rd", "192.168.71.50");
+                var rpcClient = new PrincipalAPI.AMQP.Principal("user", "Passw0rd", "192.168.1.206");
                 // var rpcClient = new PrincipalAPI.AMQP.Principal("user", "Passw0rd", "192.168.71.50");
                 rpcClient.Open();
 

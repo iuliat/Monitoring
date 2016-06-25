@@ -29,6 +29,7 @@ namespace PrincipalAPI.Controllers
     */
     public class HostsController : ODataController
     {
+
         private PrincipalAPIContext db = new PrincipalAPIContext();
 
         // GET: odata/Hosts

@@ -1,24 +1,86 @@
-﻿<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+﻿@*
+    This is the example main content of the AdminLTE demo and represents a good smattering of AdminLTE functionality in a cshtml
+    TODO: Delete this file when you're ready to start building your app
+*@
+
+@{
+// Layout set automatially in _ViewStart.cshtml
+
+// EXAMPLE:
+// Using the ViewBag on a page to set the title and sub-title
+// This will cause the _AdminLteLayout to include this value in the page title
+// And also set the top titles in the main content area of the page
+//ViewBag.Title = "Admin LTE";
+//ViewBag.TitleSmall = "Version 2.0";
+
+//// EXAMPLE:
+//// Using the Breadcrumb class to create a dynamically generated breadcrumb on the page with
+//// Titles, plus optional icon and URLs
+//ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+//    new Crumb("Dashboard", "", "fa-dashboard")
+//});
+}
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" style="margin-left:0px;">
+    <!-- Content Header (Page header) -->
+    @*<section class="content-header">
+        <h1>
+            Fixed Layout
+            <small>Blank example to the fixed layout</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Layout</a></li>
+            <li class="active">Fixed</li>
+        </ol>
+    </section>*@
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Notifications</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                Here are the latest notifications regarding VMs activity
+            </div>
+            <!-- /.box-body -->
+
+        </div>
+
+        <div class="callout callout-info">
+            <h4>Tip!</h4>
+
+            <p>
+                Add the fixed class to the body tag to get this layout. The fixed layout is your best option if your sidebar
+                is bigger than your content because it prevents extra unwanted scrolling.
+            </p>
+        </div>
+        <!-- Default box -->
+       
+        <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
 </div>
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-        is an ideal platform for building RESTful applications on the .NET Framework.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+@section scripts {
+    @*NOTE: These should NOT be used in a production situation
+        They do contains useful snippets on how to setup charts*@
+    <script src="~/Scripts/AdminLTE/pages/dashboard2.js"></script>
+    <script src="~/Scripts/AdminLTE/demo.js"></script>
+}
+
+
+
