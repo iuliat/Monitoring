@@ -9,12 +9,12 @@ namespace PrincipalAPI.Models
 {
     public class Controller
     {
+        //[Key]
+        //public int ControllerID { get; set; }
+
         [Key]
-        public int ControllerID { get; set; }
-
-        [Required]
-        public string IP { get; set; }
-
+        public string ControllerIP { get; set; }
+        public string ControllerCorrID { get; set; }
         public virtual ICollection<Host> hosts { get; set; }
     }
 }

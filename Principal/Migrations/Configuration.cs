@@ -30,35 +30,27 @@ namespace PrincipalAPI.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             ////
-            context.Hosts.AddOrUpdate(new Host[] {
-                new Host() {  IP = "192.168.199.10" , ControllerID = 1, MetricID=1},
-                new Host() {  IP = "192.168.199.22" , ControllerID = 1, MetricID=2},
 
-            });
 
-            context.Controllers.AddOrUpdate(new Controller[] {
-                new Controller() {ControllerID = 1, IP = "127.0.0.1"  },
-                new Controller() { ControllerID = 2, IP = "127.0.0.1"  },
 
-            });
+            //context.Hosts.AddOrUpdate(new Host[] {
+            //    new Host() {  IP = "192.168.199.10" , ControllerID = 1, MetricID=1},
+            //    new Host() {  IP = "192.168.199.22" , ControllerID = 1, MetricID=2},
 
-            context.Metrics.AddOrUpdate(new Metrics[] {
-                new Metrics() {  MetricID=1},
-                new Metrics() {  MetricID=2},
+            //});
 
-            });
+            //context.Controllers.AddOrUpdate(new Controller[] {
+            //    new Controller() {ControllerID = 1, IP = "127.0.0.1"  },
+            //    new Controller() { ControllerID = 2, IP = "127.0.0.1"  },
+
+            //});
 
             //context.Metrics.AddOrUpdate(new Metrics[] {
-            //    new Metrics() {CPURefId = '1', RAMRefId='1'  },
+            //    new Metrics() {  MetricID=1},
+            //    new Metrics() {  MetricID=2},
+
             //});
 
-            //context.CPUs.AddOrUpdate(new CPU[] {
-            //    new CPU() { Value=123  },
-            //});
-
-            //context.RAMs.AddOrUpdate(new RAM[] {
-            //    new RAM() { Value=13  },
-            //});
 
 
 

@@ -14,6 +14,5 @@ namespace CoreAMQP.Messages
             this.Payload = Payload;
         }
 
-        public abstract Message Handle();
     }
 }

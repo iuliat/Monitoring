@@ -9,12 +9,6 @@ namespace CoreAMQP.Messages
         {
         }
 
-        public override Message Handle()
-        {
-            UInt64 Value = Convert.ToUInt64(this.Payload);
-            return new MessageFibonacci(MessageFibonacci.Calculate(Value));
-        }
-
         public static UInt64 Calculate(UInt64 Value)
         {
             if ((Value == 0) || (Value == 1))

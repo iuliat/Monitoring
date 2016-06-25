@@ -23,7 +23,7 @@ namespace PrincipalAPI.Controllers
     using PrincipalAPI.Models;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
     builder.EntitySet<Host>("Hosts");
-    builder.EntitySet<VMMon.PrincipalAPI>("Controllers"); 
+    builder.EntitySet<Controller>("Controllers"); 
     builder.EntitySet<Metrics>("Metrics"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
@@ -40,13 +40,13 @@ namespace PrincipalAPI.Controllers
 
         // GET: odata/Hosts(5)
         [EnableQuery]
-        public SingleResult<Host> GetHost([FromODataUri] int key)
+        public SingleResult<Host> GetHost([FromODataUri] string key)
         {
-            return SingleResult.Create(db.Hosts.Where(host => host.HostID == key));
+            return SingleResult.Create(db.Hosts.Where(host => host.HostIP == key));
         }
 
         // PUT: odata/Hosts(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<Host> patch)
+        public async Task<IHttpActionResult> Put([FromODataUri] string key, Delta<Host> patch)
         {
             Validate(patch.GetEntity());
 
@@ -91,14 +91,29 @@ namespace PrincipalAPI.Controllers
             }
 
             db.Hosts.Add(host);
-            await db.SaveChangesAsync();
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (HostExists(host.HostIP))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return Created(host);
         }
 
         // PATCH: odata/Hosts(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Host> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] string key, Delta<Host> patch)
         {
             Validate(patch.GetEntity());
 
@@ -135,7 +150,7 @@ namespace PrincipalAPI.Controllers
         }
 
         // DELETE: odata/Hosts(5)
-        public async Task<IHttpActionResult> Delete([FromODataUri] int key)
+        public async Task<IHttpActionResult> Delete([FromODataUri] string key)
         {
             Host host = await db.Hosts.FindAsync(key);
             if (host == null)
@@ -149,18 +164,18 @@ namespace PrincipalAPI.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: odata/Hosts(5)/VMMon.PrincipalAPI
+        // GET: odata/Hosts(5)/Controller
         [EnableQuery]
-        public SingleResult<Controller> GetController([FromODataUri] int key)
+        public SingleResult<Controller> GetController([FromODataUri] string key)
         {
-            return SingleResult.Create(db.Hosts.Where(m => m.HostID == key).Select(m => m.Controller));
+            return SingleResult.Create(db.Hosts.Where(m => m.HostIP == key).Select(m => m.Controller));
         }
 
         // GET: odata/Hosts(5)/Metrics
         [EnableQuery]
-        public SingleResult<Metrics> GetMetrics([FromODataUri] int key)
+        public SingleResult<Metrics> GetMetrics([FromODataUri] string key)
         {
-            return SingleResult.Create(db.Hosts.Where(m => m.HostID == key).Select(m => m.Metrics));
+            return SingleResult.Create(db.Hosts.Where(m => m.HostIP == key).Select(m => m.Metrics));
         }
 
         protected override void Dispose(bool disposing)
@@ -172,9 +187,9 @@ namespace PrincipalAPI.Controllers
             base.Dispose(disposing);
         }
 
-        private bool HostExists(int key)
+        private bool HostExists(string key)
         {
-            return db.Hosts.Count(e => e.HostID == key) > 0;
+            return db.Hosts.Count(e => e.HostIP == key) > 0;
         }
     }
 }

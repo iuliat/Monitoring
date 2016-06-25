@@ -11,7 +11,7 @@ namespace CoreAMQP
 {
     public abstract class AMQPNode
     {
-        public static readonly String DefaultQueueName = "VMMonitor Queue";
+        public static readonly String DefaultQueueName = "VMMonitorQueue5";
 
         public String BrokerAddress { get; private set; }
         public String User { get; private set; }
@@ -33,29 +33,6 @@ namespace CoreAMQP
                 Binary.Serialize(ByteBuffer, Object);
             }
             return ByteBuffer.ToArray();
-        }
-
-        public static List<String> GetLocalIPAddress()
-        {
-            List<String> IPv4s = new List<String>();
-
-            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-            {
-                throw new Exception("No network connection is available.");
-            }
-
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    IPv4s.Add(ip.ToString());
-                }
-            }
-
-            return IPv4s;
-            //throw new Exception("Local IP Address Not Found!");
         }
 
         public static T DeserializeToType<T>(byte[] ByteArray)

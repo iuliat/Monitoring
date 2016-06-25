@@ -11,17 +11,18 @@ namespace PrincipalAPI.Models
     public class Host
     {
 
+        //[Key]
+        //public int HostID { get; set; }
+
         [Key]
-        public int HostID { get; set; }
+        public string HostIP { get; set; }
 
-        [Required]
-        public string IP { get; set; }
-
+        public string HostCorrID { get; set; }
         //[ForeignKey("MetricsRefID")]
         //public int MetricsRefID { get; set; }
 
         [Required]
-        public int ControllerID { get; set; }
+        public string ControllerIP { get; set; }
         public virtual Controller Controller { get; set; }
 
         [Required]

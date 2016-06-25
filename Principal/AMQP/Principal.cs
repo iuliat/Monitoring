@@ -1,5 +1,6 @@
 ﻿using CoreAMQP;
 using CoreAMQP.Messages;
+using PrincipalAPI.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -90,11 +91,51 @@ namespace PrincipalAPI.AMQP
         {
             System.Diagnostics.Debug.WriteLine("[ "
                 + this.GetType()
-                + " ] Received "
+                + " ] ReceivedValue "
                 + "( Message Type: "
                 + newMessage.GetType()
                 + ", Value: "
                 + Convert.ToUInt64(newMessage.Payload)
+            + " )");
+
+            return null;
+        }
+
+        public Message Receive(MessageIPV4 newMessage)
+        {
+            System.Diagnostics.Debug.WriteLine("[ "
+                + this.GetType()
+                + " ] ReceivedValue "
+                + "( Message Type: "
+                + newMessage.GetType()
+                + ", Value: "
+                + "tampenie"
+            + " )");
+
+            return null;
+        }
+
+        public Message Receive(EstablishedCommunicationMessage newMessage)
+        {
+            //using (var context = new PrincipalAPIContext())
+            //{
+            //    var currentController = new Controller();
+
+            //    currentController.ControllerID = 77;
+            //    currentController.IP = "23.23.24";
+            //    currentController.hosts = null;
+
+            //    context.Controllers.Add(currentController);
+            //    context.SaveChanges();
+            //}
+
+            System.Diagnostics.Debug.WriteLine("[ "
+                + this.GetType()
+                + " ] ReceivedValue "
+                + "( Message Type: "
+                + newMessage.GetType()
+                + ", Value: "
+                + Convert.ToBoolean(newMessage.Payload)
             + " )");
 
             return null;

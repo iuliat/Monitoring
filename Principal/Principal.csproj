@@ -238,7 +238,9 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\sb-admin-2.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\timeline.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -334,9 +336,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606131722257_Initial11.cs" />
-    <Compile Include="Migrations\201606131722257_Initial11.designer.cs">
-      <DependentUpon>201606131722257_Initial11.cs</DependentUpon>
+    <Compile Include="Migrations\201606250446487_Models-strings-key.cs" />
+    <Compile Include="Migrations\201606250446487_Models-strings-key.Designer.cs">
+      <DependentUpon>201606250446487_Models-strings-key.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -352,6 +354,7 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Storage\VMStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -375,12 +378,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606131722257_Initial11.resx">
-      <DependentUpon>201606131722257_Initial11.cs</DependentUpon>
-    </EmbeddedResource>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <EmbeddedResource Include="Migrations\201606250446487_Models-strings-key.resx">
+      <DependentUpon>201606250446487_Models-strings-key.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

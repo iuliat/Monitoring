@@ -46,8 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AMQPNode.cs" />
+    <Compile Include="Messages\EstablishedCommunicationMessage.cs" />
     <Compile Include="Messages\MesageFibonacci.cs" />
     <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\MessageIPV4.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

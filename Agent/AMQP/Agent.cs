@@ -89,7 +89,17 @@ namespace AgentAPI.AMQP
 
         public Message Receive(MessageFibonacci newMessage)
         {
-            return newMessage.Handle();
+            return new MessageFibonacci(MessageFibonacci.Calculate(Convert.ToUInt64(newMessage.Payload)));
+        }
+
+        public Message Receive(MessageIPV4 newMessage)
+        {
+            return new MessageIPV4(MessageIPV4.GetLocalIPAddress());
+        }
+
+        public Message Receive(EstablishedCommunicationMessage newMessage)
+        {
+            return new EstablishedCommunicationMessage(EstablishedCommunicationMessage.IsValidCommunication());
         }
     }
 }
