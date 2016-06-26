@@ -83,8 +83,9 @@
 			// Do a random walk
         var cpuValues=[];
        // a=[1,2,3,4,5,45,44,33,22,12]
+        alert(hostID)
         $.ajax({
-                url: 'http://localhost:14607//Monitoring/GetCPUsJSON',
+                url: 'http://localhost:14607//Monitoring/GetCPUsJSON?id='+ hostID,
                 dataType: 'json',
                 type: 'GET',
                 contentType: 'pplication/x-www-form-urlencoded; charset=utf-8',
