@@ -11,16 +11,20 @@ namespace CoreAMQP
 {
     public abstract class AMQPNode
     {
-        public static readonly String DefaultQueueName = "VMMonitorQueue6";
+        public const String DefaultReceiveQueueName = "AMQP Receive Queue";
+        public const String DefaultSendQueueName = "AMQP Send Queue";
 
         public String BrokerAddress { get; private set; }
         public String User { get; private set; }
-        protected string Password { get; private set; }
+        protected String Password { get; private set; }
+        public String ReceiveQueueName { get; private set; }
+        public String SendQueueName { get; private set; }
 
-        protected IConnection BrokerConnection;
-        protected IModel Channel;
-        protected EventingBasicConsumer Consumer;
-        protected string replyQueueName;
+        protected IConnection BrokerConnection = null;
+        protected IModel ChannelSend = null;
+        protected IModel ChannelReceive = null;
+        protected EventingBasicConsumer ConsumerReceive = null;
+        protected String TagReceive = null;
 
         #region Helpers
         public static byte[] SerializeFromType<T>(T Object)
@@ -64,7 +68,7 @@ namespace CoreAMQP
         {
         }
 
-        public AMQPNode(String customUser, String customPassword, String customBrokerAddress)
+        public AMQPNode(String customUser, String customPassword, String customBrokerAddress, String ReceiveQueueName = DefaultReceiveQueueName, String SendQueueName = DefaultSendQueueName)
         {
             IPAddress[] BrokerIPAddress;
 
@@ -76,6 +80,8 @@ namespace CoreAMQP
             this.BrokerAddress = customBrokerAddress;
             this.User = customUser ?? "";
             this.Password = customPassword ?? "";
+            this.ReceiveQueueName = ReceiveQueueName;
+            this.SendQueueName = SendQueueName;
 
             System.Diagnostics.Debug.WriteLine("[ "
                 + this.GetType()
@@ -84,6 +90,19 @@ namespace CoreAMQP
                 + this.BrokerAddress
                 + ", User: "
                 + this.User
+                + " )");
+        }
+        #endregion
+
+        #region Destructors
+        ~AMQPNode()
+        {
+            this.Close();
+
+            System.Diagnostics.Debug.WriteLine("[ "
+                + this.GetType()
+                + " ] Destroyed "
+                + "( "
                 + " )");
         }
         #endregion
@@ -98,27 +117,54 @@ namespace CoreAMQP
             };
 
             this.BrokerConnection = AMQP.CreateConnection();
-            this.Channel = BrokerConnection.CreateModel();
+            this.OpenReceiver();
+            this.OpenSender();
+        }
 
-            // Create queue if it does not exist
-            this.Channel.QueueDeclare(
-                queue: AMQPNode.DefaultQueueName,
+        public virtual void OpenReceiver()
+        {
+            // Create receive queue if it does not exist
+            this.ChannelReceive = BrokerConnection.CreateModel();
+            this.ChannelReceive.QueueDeclare(
+                queue: this.ReceiveQueueName,
                 durable: false,
                 exclusive: false,
                 autoDelete: false,
                 arguments: null
             );
 
-            this.Channel.BasicQos(0, 1, false);
-            Consumer = new EventingBasicConsumer(Channel);
-            Consumer.Received += ReceiveDispatch;
+            this.ChannelReceive.BasicQos(0, 1, false);
+            ConsumerReceive = new EventingBasicConsumer(ChannelReceive);
+            ConsumerReceive.Received += ReceiveDispatch;
 
             // Create a consumer of the queue
-            Channel.BasicConsume(queue: AMQPNode.DefaultQueueName, noAck: false, consumer: Consumer);
+            this.TagReceive = ChannelReceive.BasicConsume(queue: this.ReceiveQueueName, noAck: false, consumer: this.ConsumerReceive);
 
             System.Diagnostics.Debug.WriteLine("[ "
                 + this.GetType()
-                + " ] Opened "
+                + " ] Opened Receiver "
+                + "( Address: "
+                + this.BrokerAddress
+                + ", User: "
+                + this.User
+                + " )");
+        }
+
+        public virtual void OpenSender()
+        {
+            // Create send queue if it does not exist
+            this.ChannelSend = BrokerConnection.CreateModel();
+            this.ChannelSend.QueueDeclare(
+                queue: this.SendQueueName,
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null
+            );
+
+            System.Diagnostics.Debug.WriteLine("[ "
+                + this.GetType()
+                + " ] Opened Sender "
                 + "( Address: "
                 + this.BrokerAddress
                 + ", User: "
@@ -128,25 +174,113 @@ namespace CoreAMQP
 
         public void Close()
         {
-            this.BrokerConnection.Close();
+            try
+            {
+                this.CloseReceiver();
+                this.CloseSender();
+                this.BrokerConnection.Close();
 
-            System.Diagnostics.Debug.WriteLine("[ "
-                + this.GetType()
-                + " ] Closed "
-                + "( Address: "
-                + this.BrokerAddress
-                + ", User: "
-                + this.User
-                + " )");
+                BrokerConnection = null;
+
+                System.Diagnostics.Debug.WriteLine("[ "
+                    + this.GetType()
+                    + " ] Closed "
+                    + "( Address: "
+                    + this.BrokerAddress
+                    + ", User: "
+                    + this.User
+                    + " )");
+            }
+            catch (Exception /*Ignored*/)
+            {
+
+            }
+        }
+
+        public void CloseReceiver()
+        {
+            try
+            {
+                ChannelReceive.BasicCancel(TagReceive);
+                TagReceive = null;
+                ConsumerReceive = null;
+                ChannelReceive.Close();
+                ChannelReceive = null;
+
+                System.Diagnostics.Debug.WriteLine("[ "
+                    + this.GetType()
+                    + " ] Closed Receiver "
+                    + "( Address: "
+                    + this.BrokerAddress
+                    + ", User: "
+                    + this.User
+                    + " )");
+            }
+            catch (Exception /*Ignored*/)
+            {
+
+            }
+        }
+
+        public void CloseSender()
+        {
+            try
+            {
+                ChannelSend.Close();
+                ChannelSend = null;
+
+                System.Diagnostics.Debug.WriteLine("[ "
+                    + this.GetType()
+                    + " ] Closed Sender "
+                    + "( Address: "
+                    + this.BrokerAddress
+                    + ", User: "
+                    + this.User
+                    + " )");
+            }
+            catch (Exception /*Ignored*/)
+            {
+
+            }
+        }
+
+        public void ChangeReceiveQueueName(String newName)
+        {
+            if (this.ChannelReceive != null)
+            {
+                this.CloseReceiver();
+                this.ReceiveQueueName = newName;
+                this.OpenReceiver();
+            }
+            else
+            {
+                this.ReceiveQueueName = newName;
+            }
+        }
+
+        public void ChangeSendQueueName(String newName)
+        {
+            if (this.ChannelSend != null)
+            {
+                this.CloseSender();
+                this.SendQueueName = newName;
+                this.OpenSender();
+            }
+            else
+            {
+                this.SendQueueName = newName;
+            }
         }
 
         protected abstract void ReceiveDispatch(object Sender, BasicDeliverEventArgs Event);
 
         public void Send(Byte[] newMessage)
         {
-            IBasicProperties SendProperties = Channel.CreateBasicProperties();
-            SendProperties.ReplyTo = AMQPNode.DefaultQueueName;
-            SendProperties.CorrelationId = Guid.NewGuid().ToString();
+            IBasicProperties SendProperties = ChannelSend.CreateBasicProperties();
+            SendProperties.AppId = this.GetType().ToString();
+            SendProperties.MessageId = Guid.NewGuid().ToString();
+            SendProperties.ReplyTo = this.ReceiveQueueName;
+            SendProperties.CorrelationId = this.SendQueueName;
 
             this.Send(SendProperties, newMessage);
         }
@@ -154,9 +288,9 @@ namespace CoreAMQP
         public void Send(IBasicProperties SendProperties, Byte[] newMessage)
         {
             Byte[] SendMessage = newMessage;
-            String Destination = SendProperties.ReplyTo ?? AMQPNode.DefaultQueueName;
+            String Destination = SendProperties.CorrelationId;
 
-            Channel.BasicPublish(exchange: "", routingKey: Destination, basicProperties: SendProperties, body: SendMessage);
+            ChannelSend.BasicPublish(exchange: "", routingKey: Destination, basicProperties: SendProperties, body: SendMessage);
 
             System.Diagnostics.Debug.WriteLine("[ "
                 + this.GetType()
@@ -165,6 +299,8 @@ namespace CoreAMQP
                 + SendMessage.GetType()
                 + ", Destination: "
                 + Destination
+                + ", Id: "
+                + SendProperties.MessageId
                 + " )");
         }
     }

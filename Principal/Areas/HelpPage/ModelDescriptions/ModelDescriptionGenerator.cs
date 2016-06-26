@@ -10,7 +10,6 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Principal.Areas.HelpPage.ModelDescriptions;
 
 namespace PrincipalAPI.Areas.HelpPage.ModelDescriptions
 {

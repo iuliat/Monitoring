@@ -15,9 +15,10 @@ using System.Threading.Tasks;
 
 namespace PrincipalAPI.AMQP
 {
-    public class Principal : AMQPNode
+    public class Principal : VMMonitorNode
     {
-        public readonly LinkedList<Message> Messages = new LinkedList<Message>();
+        public new const String DefaultReceiveQueueName = "Principal Receive Queue";
+        public new const String DefaultSendQueueName = "Principal Send Queue";
 
         #region Constructors
         public Principal() : this("user", "password", "127.0.0.1")
@@ -37,66 +38,25 @@ namespace PrincipalAPI.AMQP
         }
         #endregion
 
-        protected override void ReceiveDispatch(object Sender, BasicDeliverEventArgs Event)
+        #region Principal Custom Message Handlers
+        public override Message Receive(Message newMessage)
         {
-            Byte[] ReceivedBody = Event.Body;
+            Type newMessageType = newMessage.Type;
+            dynamic Propper = Convert.ChangeType(newMessage, newMessageType);
 
-            IBasicProperties ReceiveProperties = Event.BasicProperties;
-
-            IBasicProperties SendProperties = Channel.CreateBasicProperties();
-            SendProperties.CorrelationId = ReceiveProperties.CorrelationId;
-            SendProperties.ReplyTo = ReceiveProperties.ReplyTo;
-
-            Message ReceivedMessage = DeserializeToType<Message>(ReceivedBody);
-
-            Type ReceivedMessageType = ReceivedMessage.Type;
-            dynamic Propper = Convert.ChangeType(ReceivedMessage, ReceivedMessageType);
-            Message SendMessage = this.Receive(Propper);
-
-            // If received message needs a reply
-            if (SendMessage != null)
-            {
-                // Send needed reply
-                this.Send(SendProperties, SendMessage);
-            }
-            Channel.BasicAck(deliveryTag: Event.DeliveryTag, multiple: false);
-
-            System.Diagnostics.Debug.WriteLine("[ "
-                + this.GetType()
-                + " ] Received "
-                + "( Message Type: "
-                + ReceivedMessage.GetType()
-                + ", Source: "
-                + ReceiveProperties.ReplyTo
-                + " )");
-        }
-
-        public void Send(Message newMessage)
-        {
-            IBasicProperties SendProperties = Channel.CreateBasicProperties();
-            SendProperties.ReplyTo = AMQPNode.DefaultQueueName;
-            SendProperties.CorrelationId = Guid.NewGuid().ToString();
-
-            this.Send(SendProperties, newMessage);
-        }
-
-        public void Send(IBasicProperties SendProperties, Message newMessage)
-        {
-            Byte[] SendMessage = SerializeFromType<Message>(newMessage);
-
-            base.Send(SendProperties, SendMessage);
+            return this.Receive(Propper);
         }
 
         public Message Receive(MessageFibonacci newMessage)
         {
             System.Diagnostics.Debug.WriteLine("[ "
                 + this.GetType()
-                + " ] ReceivedValue "
+                + " ] Received Fibonacci Result "
                 + "( Message Type: "
                 + newMessage.GetType()
                 + ", Value: "
                 + Convert.ToUInt64(newMessage.Payload)
-            + " )");
+                + " )");
 
             return null;
         }
@@ -105,40 +65,77 @@ namespace PrincipalAPI.AMQP
         {
             System.Diagnostics.Debug.WriteLine("[ "
                 + this.GetType()
-                + " ] ReceivedValue "
+                + " ] Received IPV4 Result "
                 + "( Message Type: "
                 + newMessage.GetType()
                 + ", Value: "
-                + "tampenie"
-            + " )");
+                + (newMessage.Payload as List<String>).ToArray<String>()
+                + " )");
 
             return null;
         }
 
         public Message Receive(EstablishedCommunicationMessage newMessage)
         {
-            //using (var context = new PrincipalAPIContext())
-            //{
-            //    var currentController = new Controller();
-
-            //    currentController.ControllerID = 77;
-            //    currentController.IP = "23.23.24";
-            //    currentController.hosts = null;
-
-            //    context.Controllers.Add(currentController);
-            //    context.SaveChanges();
-            //}
-
             System.Diagnostics.Debug.WriteLine("[ "
                 + this.GetType()
-                + " ] ReceivedValue "
+                + " ] Received Established Communication State Response "
                 + "( Message Type: "
                 + newMessage.GetType()
                 + ", Value: "
                 + Convert.ToBoolean(newMessage.Payload)
-            + " )");
+                + " )");
 
             return null;
         }
+
+        public Message Receive(MessageRAM newMessage)
+        {
+            System.Diagnostics.Debug.WriteLine("[ "
+                + this.GetType()
+                + " ] Received RAM Message "
+                + "( Message Type: "
+                + newMessage.GetType()
+                + ", Value: "
+                + "{ "
+                + String.Join<Single>(" ", (newMessage.Payload as List<Single>))
+                + " }"
+                + " )");
+
+            return null;
+        }
+
+        public Message Receive(MessageCPU newMessage)
+        {
+            System.Diagnostics.Debug.WriteLine("[ "
+                + this.GetType()
+                + " ] Received CPU Message "
+                + "( Message Type: "
+                + newMessage.GetType()
+                + ", Value: "
+                + "{ "
+                + String.Join<Single>(" ", (newMessage.Payload as List<Single>))
+                + " }"
+                + " )");
+
+            return null;
+        }
+        #endregion
+
+        #region Principal Behaviour
+        // Debug hook method
+        protected override void ReceiveDispatch(object Sender, BasicDeliverEventArgs Event)
+        {
+            base.ReceiveDispatch(Sender, Event);
+        }
+
+        public override Boolean Filter(BasicDeliverEventArgs Event)
+        {
+            if (Event.BasicProperties.AppId == "PrincipalAPI.AMQP.Principal")
+                return true;
+
+            return false;
+        }
+        #endregion
     }
 }
