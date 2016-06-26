@@ -25,31 +25,18 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header"><i class="fa fa-dashboard fa-2x" style="color:#3c8dbc;padding-right: 10px;"></i> <span style="color:#3c8dbc;font-size:16px;">Dashboard</span> <i class="fa fa-angle-left pull-right"></i></li>
-            @*<li>@Html.ActionLink("Homessad", "Index", "Home", new { area = "" }, null)</li>*@
-            <li class="active treeview">
-                <a href="/Hosts"
-                    <i class="fa fa-bell-o"></i> <span>Notifications</span>
-                </a>
+
+            <li class="treeview"><a href="@Url.Action("Notifications", "Monitoring")"><i class="fa fa-bell-o"></i> <span>Notifications</span></a></li>
                 <li class="header"><i class="fa fa-circle-o text-danger" style="padding-right:5px;padding-left:5px;"></i> Important</li>
                 <li class="header"><i class="fa fa-circle-o text-warning" style="padding-right:5px;padding-left:5px;"></i> Warning</li>
                 <li class="header"><i class="fa fa-circle-o text-info" style="padding-right:5px;padding-left:5px;"></i> Information</li>
 
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-laptop"></i>
-                    <span>Virtual Machines</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="pages/UI/general.html">Add a VM</a></li>
-                    <li><a href="pages/UI/icons.html">VM Overview</a></li>
-                    <li><a href="pages/UI/buttons.html">VM Settings</a></li>
-                </ul>
-            </li>
+
+            <li class="treeview"><a href="@Url.Action("VMs", "Monitoring")"><i class="fa fa-desktop"></i> <span>VMs</span></a></li>
+
    
             <li class="treeview">
-                <a href="#">
+                <a href="@Url.Action("Graphs", "Monitoring")">
                     <i class="fa fa-area-chart"></i> <span>Monitoring Graphs</span>
                 </a>
             </li>
@@ -58,9 +45,6 @@
                     <i class="fa  fa-play"></i> <span>Performance Test</span>
                 </a>
             </li>
-
-
-            @*<li class="header">LABELS</li>*@
 
         </ul>
     </section>

@@ -835,6 +835,10 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jquery_flot_categories_min.js" />
+    <Content Include="Scripts\jquery_flot_min.js" />
+    <Content Include="Scripts\jquery_flot_pie_min.js" />
+    <Content Include="Scripts\jquery_flot_resize_min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -879,24 +883,26 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AdminLteController.cs" />
-    <Compile Include="Controllers\ControllersController.cs" />
     <Compile Include="Controllers\CPUsController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HostsController.cs" />
+    <Compile Include="Controllers\MasterVMsController.cs" />
     <Compile Include="Controllers\MetricsController.cs" />
+    <Compile Include="Controllers\MonitoringController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\RAMsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606250446487_Models-strings-key.cs" />
-    <Compile Include="Migrations\201606250446487_Models-strings-key.Designer.cs">
-      <DependentUpon>201606250446487_Models-strings-key.cs</DependentUpon>
+    <Compile Include="Migrations\201606261338160_Initial9.cs" />
+    <Compile Include="Migrations\201606261338160_Initial9.Designer.cs">
+      <DependentUpon>201606261338160_Initial9.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Controller.cs" />
+    <Compile Include="Models\MasterVM.cs" />
+    <Compile Include="Models\Notifications.cs" />
     <Compile Include="Models\PrincipalAPIContext.cs" />
     <Compile Include="Models\CPU.cs" />
     <Compile Include="Models\Host.cs" />
@@ -921,9 +927,17 @@
     <Content Include="Views\Shared\_AdminLteLeftMenu.cshtml" />
     <Content Include="Views\Shared\_AdminLteLayout.cshtml" />
     <Content Include="Views\Shared\_AdminLteBreadcrumb.cshtml" />
-    <Content Include="Views\AdminLte\Index.cshtml" />
-    <Content Include="Views\AdminLte\Colors.cshtml" />
-    <Content Include="Views\AdminLte\Notifications.cshtml" />
+    <Content Include="Views\Monitoring\Index.cshtml" />
+    <Content Include="Views\Monitoring\Colors.cshtml" />
+    <Content Include="Views\Monitoring\Notifications.cshtml" />
+    <Content Include="Views\Monitoring\Overview.cshtml" />
+    <Content Include="Views\Monitoring\VMs.cshtml" />
+    <Content Include="Views\Monitoring\AddVM.cshtml" />
+    <Content Include="Views\Monitoring\AllVMs.cshtml" />
+    <Content Include="Views\Monitoring\NewVM.cshtml" />
+    <Content Include="Views\Monitoring\Graphs.cshtml" />
+    <Content Include="Views\Monitoring\GraphsCPUs.cshtml" />
+    <Content Include="Views\Monitoring\GraphsRAMs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -941,11 +955,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606250446487_Models-strings-key.resx">
-      <DependentUpon>201606250446487_Models-strings-key.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606261338160_Initial9.resx">
+      <DependentUpon>201606261338160_Initial9.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

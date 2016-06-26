@@ -22,30 +22,30 @@ namespace PrincipalAPI.Controllers
     using System.Web.Http.OData.Extensions;
     using PrincipalAPI.Models;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<Controller>("Controllers");
+    builder.EntitySet<Notifications>("Notifications");
     builder.EntitySet<Host>("Hosts"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
-    public class ControllersController : ODataController
+    public class NotificationsController : ODataController
     {
         private PrincipalAPIContext db = new PrincipalAPIContext();
 
-        // GET: odata/Controllers
+        // GET: odata/Notifications
         [EnableQuery]
-        public IQueryable<Controller> GetControllers()
+        public IQueryable<Notifications> GetNotifications()
         {
-            return db.Controllers;
+            return db.Notifications;
         }
 
-        // GET: odata/Controllers(5)
+        // GET: odata/Notifications(5)
         [EnableQuery]
-        public SingleResult<Controller> GetController([FromODataUri] string key)
+        public SingleResult<Notifications> GetNotifications([FromODataUri] int key)
         {
-            return SingleResult.Create(db.Controllers.Where(controller => controller.ControllerIP == key));
+            return SingleResult.Create(db.Notifications.Where(notifications => notifications.NotificationID == key));
         }
 
-        // PUT: odata/Controllers(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] string key, Delta<Controller> patch)
+        // PUT: odata/Notifications(5)
+        public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<Notifications> patch)
         {
             Validate(patch.GetEntity());
 
@@ -54,13 +54,13 @@ namespace PrincipalAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            Controller controller = await db.Controllers.FindAsync(key);
-            if (controller == null)
+            Notifications notifications = await db.Notifications.FindAsync(key);
+            if (notifications == null)
             {
                 return NotFound();
             }
 
-            patch.Put(controller);
+            patch.Put(notifications);
 
             try
             {
@@ -68,7 +68,7 @@ namespace PrincipalAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ControllerExists(key))
+                if (!NotificationsExists(key))
                 {
                     return NotFound();
                 }
@@ -78,41 +78,26 @@ namespace PrincipalAPI.Controllers
                 }
             }
 
-            return Updated(controller);
+            return Updated(notifications);
         }
 
-        // POST: odata/Controllers
-        public async Task<IHttpActionResult> Post(Controller controller)
+        // POST: odata/Notifications
+        public async Task<IHttpActionResult> Post(Notifications notifications)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Controllers.Add(controller);
+            db.Notifications.Add(notifications);
+            await db.SaveChangesAsync();
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ControllerExists(controller.ControllerIP))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Created(controller);
+            return Created(notifications);
         }
 
-        // PATCH: odata/Controllers(5)
+        // PATCH: odata/Notifications(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] string key, Delta<Controller> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Notifications> patch)
         {
             Validate(patch.GetEntity());
 
@@ -121,13 +106,13 @@ namespace PrincipalAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            Controller controller = await db.Controllers.FindAsync(key);
-            if (controller == null)
+            Notifications notifications = await db.Notifications.FindAsync(key);
+            if (notifications == null)
             {
                 return NotFound();
             }
 
-            patch.Patch(controller);
+            patch.Patch(notifications);
 
             try
             {
@@ -135,7 +120,7 @@ namespace PrincipalAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ControllerExists(key))
+                if (!NotificationsExists(key))
                 {
                     return NotFound();
                 }
@@ -145,29 +130,29 @@ namespace PrincipalAPI.Controllers
                 }
             }
 
-            return Updated(controller);
+            return Updated(notifications);
         }
 
-        // DELETE: odata/Controllers(5)
-        public async Task<IHttpActionResult> Delete([FromODataUri] string key)
+        // DELETE: odata/Notifications(5)
+        public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            Controller controller = await db.Controllers.FindAsync(key);
-            if (controller == null)
+            Notifications notifications = await db.Notifications.FindAsync(key);
+            if (notifications == null)
             {
                 return NotFound();
             }
 
-            db.Controllers.Remove(controller);
+            db.Notifications.Remove(notifications);
             await db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: odata/Controllers(5)/hosts
+        // GET: odata/Notifications(5)/Host
         [EnableQuery]
-        public IQueryable<Host> Gethosts([FromODataUri] string key)
+        public SingleResult<Host> GetHost([FromODataUri] int key)
         {
-            return db.Controllers.Where(m => m.ControllerIP == key).SelectMany(m => m.hosts);
+            return SingleResult.Create(db.Notifications.Where(m => m.NotificationID == key).Select(m => m.Host));
         }
 
         protected override void Dispose(bool disposing)
@@ -179,9 +164,9 @@ namespace PrincipalAPI.Controllers
             base.Dispose(disposing);
         }
 
-        public bool ControllerExists(string key)
+        private bool NotificationsExists(int key)
         {
-            return db.Controllers.Count(e => e.ControllerIP == key) > 0;
+            return db.Notifications.Count(e => e.NotificationID == key) > 0;
         }
     }
 }

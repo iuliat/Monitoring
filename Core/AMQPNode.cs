@@ -11,7 +11,7 @@ namespace CoreAMQP
 {
     public abstract class AMQPNode
     {
-        public static readonly String DefaultQueueName = "VMMonitorQueue5";
+        public static readonly String DefaultQueueName = "VMMonitorQueue6";
 
         public String BrokerAddress { get; private set; }
         public String User { get; private set; }

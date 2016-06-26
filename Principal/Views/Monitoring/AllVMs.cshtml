@@ -1,0 +1,63 @@
+﻿@*
+    This is the example main content of the AdminLTE demo and represents a good smattering of AdminLTE functionality in a cshtml
+    TODO: Delete this file when you're ready to start building your app
+*@
+
+@{
+// Layout set automatially in _ViewStart.cshtml
+
+// EXAMPLE:
+// Using the ViewBag on a page to set the title and sub-title
+// This will cause the _AdminLteLayout to include this value in the page title
+// And also set the top titles in the main content area of the page
+
+//ViewBag.Title = "Admin LTE";
+//ViewBag.TitleSmall = "Version 2.0";
+
+// EXAMPLE:
+// Using the Breadcrumb class to create a dynamically generated breadcrumb on the page with
+// Titles, plus optional icon and URLs
+//ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+//    new Crumb("Dashboard", "", "fa-dashboard")
+//});
+}
+@model  IEnumerable<PrincipalAPI.Models.Controller>
+
+<div class="table-responsive">
+    <table class="table no-margin">
+        <thead>
+            <tr>
+                <th>VM Name</th>
+                <th>IP</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("VMSettings", "Monitoring")">
+                                @Html.DisplayFor(modelItem => item.ControllerIP)
+                            </a>
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.ControllerIP)</td>
+                        <td><span class="label label-success">Shipped</span></td>
+                    </tr>
+                }
+            <tr>
+                <td><a href="@Url.Action("VMSettings", "Monitoring")"><span>vm2</span></a></td>
+                <td>Samsung Smart TV</td>
+                <td><span class="label label-warning">Pending</span></td>
+                <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
+            </tr>
+        </tbody>
+    </table>
+</div><!-- /.table-responsive -->
+
+@section scripts {
+    @*NOTE: These should NOT be used in a production situation
+        They do contains useful snippets on how to setup charts*@
+    <script src="~/Scripts/AdminLTE/pages/dashboard2.js"></script>
+    <script src="~/Scripts/AdminLTE/demo.js"></script>
+}

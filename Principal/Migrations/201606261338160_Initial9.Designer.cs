@@ -7,13 +7,13 @@ namespace PrincipalAPI.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Modelsstringskey : IMigrationMetadata
+    public sealed partial class Initial9 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Modelsstringskey));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial9));
         
         string IMigrationMetadata.Id
         {
-            get { return "201606250446487_Models-strings-key"; }
+            get { return "201606261338160_Initial9"; }
         }
         
         string IMigrationMetadata.Source

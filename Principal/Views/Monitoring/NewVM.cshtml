@@ -1,0 +1,62 @@
+﻿@*
+    This is the example main content of the AdminLTE demo and represents a good smattering of AdminLTE functionality in a cshtml
+    TODO: Delete this file when you're ready to start building your app
+*@
+
+@{
+// Layout set automatially in _ViewStart.cshtml
+
+// EXAMPLE:
+// Using the ViewBag on a page to set the title and sub-title
+// This will cause the _AdminLteLayout to include this value in the page title
+// And also set the top titles in the main content area of the page
+
+//ViewBag.Title = "Admin LTE";
+//ViewBag.TitleSmall = "Version 2.0";
+
+// EXAMPLE:
+// Using the Breadcrumb class to create a dynamically generated breadcrumb on the page with
+// Titles, plus optional icon and URLs
+//ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+//    new Crumb("Dashboard", "", "fa-dashboard")
+//});
+}
+
+@model PrincipalAPI.Models.Host
+
+@using PrincipalAPI.Models
+
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">VMs</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+    </div><!-- /.box-header -->
+
+    <div class="box-body">
+        @using (Html.BeginForm()) // asta e form-ul
+        {
+            //Model e obiectul model
+            @Html.TextBoxFor(model => Model.HostIP) //asta iti face tesxt input pentru Model.Attribute
+
+            @Html.DropDownListFor(model => Model.MasterVMID, Host.allMasters)
+            <input type="submit" formaction="Post"> //asta apeleaza metoda Post din controller
+        }
+
+    </div><!-- /.box-body -->
+    <div class="box-footer clearfix">
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+    </div><!-- /.box-footer -->
+</div>
+
+
+
+@section scripts {
+    @*NOTE: These should NOT be used in a production situation
+        They do contains useful snippets on how to setup charts*@
+    <script src="~/Scripts/AdminLTE/pages/dashboard2.js"></script>
+    <script src="~/Scripts/AdminLTE/demo.js"></script>
+}

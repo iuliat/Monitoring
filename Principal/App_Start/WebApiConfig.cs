@@ -18,10 +18,11 @@ namespace PrincipalAPI
 
             // entityset<model>("controller")
             builder.EntitySet<Host>("Hosts");
-            builder.EntitySet<Controller>("Controllers");
+            builder.EntitySet<MasterVM>("MasterVMs");
             builder.EntitySet<Metrics>("Metrics");
             builder.EntitySet<CPU>("CPUs");
             builder.EntitySet<RAM>("RAMs");
+            builder.EntitySet<Notifications>("Notifications");
             config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
         }
 

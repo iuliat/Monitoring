@@ -13,6 +13,7 @@ using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
 using PrincipalAPI.Models;
 
+
 namespace PrincipalAPI.Controllers
 {
     /*
@@ -36,6 +37,8 @@ namespace PrincipalAPI.Controllers
         {
             return db.CPUs;
         }
+
+
 
         // GET: odata/CPUs(5)
         [EnableQuery]

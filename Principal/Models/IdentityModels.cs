@@ -38,7 +38,9 @@ namespace PrincipalAPI.Models
 
         public System.Data.Entity.DbSet<PrincipalAPI.Models.Host> Hosts { get; set; }
 
-        public System.Data.Entity.DbSet<PrincipalAPI.Models.Controller> Controllers { get; set; }
+        public System.Data.Entity.DbSet<PrincipalAPI.Models.MasterVM> MasterVMs { get; set; }
+
+        public System.Data.Entity.DbSet<PrincipalAPI.Models.Notifications> Notifications { get; set; }
 
         //public System.Data.Entity.DbSet<PrincipalAPI.Models.Controller> Controllers { get; set; }
 

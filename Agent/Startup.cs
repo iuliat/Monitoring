@@ -15,7 +15,7 @@ namespace AgentAPI
 
             try
             {
-                var rpcClient = new AgentRAM("user", "Passw0rd", "192.168.1.206");
+                var rpcClient = new AgentRAM("user", "Passw0rd", "127.0.0.1");
                 // var rpcClient = new AgentRAM("user", "Passw0rd", "192.168.71.50");
                 rpcClient.Open();
 

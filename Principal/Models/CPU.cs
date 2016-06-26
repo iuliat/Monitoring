@@ -10,6 +10,9 @@ namespace PrincipalAPI.Models
         public int CPUID { get; set; }
         public int Value { get; set; }
         public DateTime Date { get; set; }
+        public String Category;
+        public int upperLimit;
+        public int lowerLimit;
 
         [Required]
         public int MetricID { get; set; }

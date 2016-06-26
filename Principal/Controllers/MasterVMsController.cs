@@ -22,32 +22,30 @@ namespace PrincipalAPI.Controllers
     using System.Web.Http.OData.Extensions;
     using PrincipalAPI.Models;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<Host>("Hosts");
-    builder.EntitySet<MasterVM>("MasterVMs"); 
-    builder.EntitySet<Metrics>("Metrics"); 
-    builder.EntitySet<Notifications>("Notifications"); 
+    builder.EntitySet<MasterVM>("MasterVMs");
+    builder.EntitySet<Host>("Hosts"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
-    public class HostsController : ODataController
+    public class MasterVMsController : ODataController
     {
         private PrincipalAPIContext db = new PrincipalAPIContext();
 
-        // GET: odata/Hosts
+        // GET: odata/MasterVMs
         [EnableQuery]
-        public IQueryable<Host> GetHosts()
+        public IQueryable<MasterVM> GetMasterVMs()
         {
-            return db.Hosts;
+            return db.MasterVMs;
         }
 
-        // GET: odata/Hosts(5)
+        // GET: odata/MasterVMs(5)
         [EnableQuery]
-        public SingleResult<Host> GetHost([FromODataUri] int key)
+        public SingleResult<MasterVM> GetMasterVM([FromODataUri] int key)
         {
-            return SingleResult.Create(db.Hosts.Where(host => host.HostID == key));
+            return SingleResult.Create(db.MasterVMs.Where(masterVM => masterVM.MasterVMID == key));
         }
 
-        // PUT: odata/Hosts(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<Host> patch)
+        // PUT: odata/MasterVMs(5)
+        public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<MasterVM> patch)
         {
             Validate(patch.GetEntity());
 
@@ -56,13 +54,13 @@ namespace PrincipalAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            Host host = await db.Hosts.FindAsync(key);
-            if (host == null)
+            MasterVM masterVM = await db.MasterVMs.FindAsync(key);
+            if (masterVM == null)
             {
                 return NotFound();
             }
 
-            patch.Put(host);
+            patch.Put(masterVM);
 
             try
             {
@@ -70,7 +68,7 @@ namespace PrincipalAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HostExists(key))
+                if (!MasterVMExists(key))
                 {
                     return NotFound();
                 }
@@ -80,26 +78,26 @@ namespace PrincipalAPI.Controllers
                 }
             }
 
-            return Updated(host);
+            return Updated(masterVM);
         }
 
-        // POST: odata/Hosts
-        public async Task<IHttpActionResult> Post(Host host)
+        // POST: odata/MasterVMs
+        public async Task<IHttpActionResult> Post(MasterVM masterVM)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Hosts.Add(host);
+            db.MasterVMs.Add(masterVM);
             await db.SaveChangesAsync();
 
-            return Created(host);
+            return Created(masterVM);
         }
 
-        // PATCH: odata/Hosts(5)
+        // PATCH: odata/MasterVMs(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Host> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<MasterVM> patch)
         {
             Validate(patch.GetEntity());
 
@@ -108,13 +106,13 @@ namespace PrincipalAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            Host host = await db.Hosts.FindAsync(key);
-            if (host == null)
+            MasterVM masterVM = await db.MasterVMs.FindAsync(key);
+            if (masterVM == null)
             {
                 return NotFound();
             }
 
-            patch.Patch(host);
+            patch.Patch(masterVM);
 
             try
             {
@@ -122,7 +120,7 @@ namespace PrincipalAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HostExists(key))
+                if (!MasterVMExists(key))
                 {
                     return NotFound();
                 }
@@ -132,43 +130,29 @@ namespace PrincipalAPI.Controllers
                 }
             }
 
-            return Updated(host);
+            return Updated(masterVM);
         }
 
-        // DELETE: odata/Hosts(5)
+        // DELETE: odata/MasterVMs(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            Host host = await db.Hosts.FindAsync(key);
-            if (host == null)
+            MasterVM masterVM = await db.MasterVMs.FindAsync(key);
+            if (masterVM == null)
             {
                 return NotFound();
             }
 
-            db.Hosts.Remove(host);
+            db.MasterVMs.Remove(masterVM);
             await db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: odata/Hosts(5)/MasterVMs
+        // GET: odata/MasterVMs(5)/hosts
         [EnableQuery]
-        public SingleResult<MasterVM> GetMasterVMs([FromODataUri] int key)
+        public IQueryable<Host> Gethosts([FromODataUri] int key)
         {
-            return SingleResult.Create(db.Hosts.Where(m => m.HostID == key).Select(m => m.MasterVMs));
-        }
-
-        // GET: odata/Hosts(5)/Metrics
-        [EnableQuery]
-        public SingleResult<Metrics> GetMetrics([FromODataUri] int key)
-        {
-            return SingleResult.Create(db.Hosts.Where(m => m.HostID == key).Select(m => m.Metrics));
-        }
-
-        // GET: odata/Hosts(5)/notifications
-        [EnableQuery]
-        public IQueryable<Notifications> Getnotifications([FromODataUri] int key)
-        {
-            return db.Hosts.Where(m => m.HostID == key).SelectMany(m => m.notifications);
+            return db.MasterVMs.Where(m => m.MasterVMID == key).SelectMany(m => m.hosts);
         }
 
         protected override void Dispose(bool disposing)
@@ -180,9 +164,16 @@ namespace PrincipalAPI.Controllers
             base.Dispose(disposing);
         }
 
-        private bool HostExists(int key)
+        private bool MasterVMExists(int key)
         {
-            return db.Hosts.Count(e => e.HostID == key) > 0;
+            return db.MasterVMs.Count(e => e.MasterVMID == key) > 0;
         }
+
+        public bool MasterVMExistsIP(String MasterVMIP)
+        {
+            return db.MasterVMs.Count(e => e.MasterVMIP == MasterVMIP) > 0;
+        }
+
+        
     }
 }
