@@ -12,46 +12,39 @@
 
 <div class="row">
     <!-- Left col -->
-    <div class="col-md-8">
+    <div class="col-md-12" style="padding-left:5%;padding-right:5%;">
         <!-- TABLE: LATEST ORDERS -->
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title">Graph</h3>
+                <h3 class="box-title">Performance Graphs</h3>
                 <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                 </div>
-            </div><!-- /.box-header -->
-
-            <div class="box-body">
-
-                <div id="header">
-                    <h2>Real-time updates</h2>
-                </div>
-
-                <div id="content">
+                <div class="row" style="margin-top:10px;">
                     @using (Html.BeginForm()) // asta e form-ul
                     {
                         //Model e obiectul model
-
-
-                        @Html.DropDownListFor(model => Model.HostID, Host.allHosts, new { @id = "selectedHost" })
-                        <input type="submit" formaction="">
-
+                        
+                        <div class="row" style="display:-moz-inline-box;margin-top:10px;padding-left:50px;">
+                            <h5 style="margin-right: 10px;">VM IP:</h5>
+                            @Html.DropDownListFor(model => Model.HostID, Host.allHosts, new { @id = "selectedHost", @class = "form-control" })
+                            <input type="submit" formaction="" value="Display" class="btn btn-primary" style="margin-left:50px;">
+                        </div>
                     }
+                </div>
+            </div><!-- /.box-header -->
+
+            <div class="box-body" style="padding:0px !important;">
+
+                <div id="content">
+
 
                     <div class="demo-container">
                         <div id="placeholder" class="demo-placeholder"></div>
                     </div>
 
-                    <p>You can update a chart periodically to get a real-time effect by using a timer to insert the new data in the plot and redraw it.</p>
-
-                    <p>Time between updates: <input id="updateInterval" type="text" value="" style="text-align: right; width:5em"> milliseconds</p>
-
                 </div>
 
-                <div id="footer">
-                    Copyright &copy; 2007 - 2014 IOLA and Ole Laursen
-                </div>
 
             </div><!-- /.box-body -->
     </div>
@@ -83,7 +76,7 @@
 			// Do a random walk
         var cpuValues=[];
        // a=[1,2,3,4,5,45,44,33,22,12]
-        alert(hostID)
+
         $.ajax({
                 url: 'http://localhost:14607//Monitoring/GetCPUsJSON?id='+ hostID,
                 dataType: 'json',
@@ -97,7 +90,7 @@
                     cpuValues = resp;
                 },
                 error: function (xhr) {
-                    alert("error");
+
                 }
             })
 

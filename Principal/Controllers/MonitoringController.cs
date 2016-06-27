@@ -86,9 +86,18 @@ namespace AdminLteMvc.Controllers
 
         public JsonResult GetCPUsJSON(int hostid)
         {
+            hostid = 2;
             PrincipalAPIContext db = new PrincipalAPIContext();
-            return Json(db.CPUs.Where(i=>i.MetricID==hostid).Select(i => i.Value).ToList(), JsonRequestBehavior.AllowGet);
+            var searchedHost = db.Hosts.Where(i => i.HostID == hostid).ToArray().First();
+            return Json(db.CPUs.Where(i => i.MetricID == searchedHost.MetricID).Select(i => i.Value).ToList(), JsonRequestBehavior.AllowGet);
         }
+
+
+        //public JsonResult GetCPUsJSON()
+        //{
+        //    PrincipalAPIContext db = new PrincipalAPIContext();
+        //    return Json(db.CPUs.Where(i => i.MetricID == 1).Select(i => i.Value).ToList(), JsonRequestBehavior.AllowGet);
+        //}
 
         public JsonResult GetRAMsJSON()
         {
