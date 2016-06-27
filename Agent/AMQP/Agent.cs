@@ -102,9 +102,19 @@ namespace AgentAPI.AMQP
             return new EstablishedCommunicationMessage(EstablishedCommunicationMessage.IsValidCommunication());
         }
 
+        public virtual Message Receive(MessageRAMInit newMessage)
+        {
+            throw new NotImplementedException();
+        }
+
         public Message Receive(MessageRAM newMessage)
         {
             return null;
+        }
+
+        public virtual Message Receive(MessageCPUInit newMessage)
+        {
+            throw new NotImplementedException();
         }
 
         public Message Receive(MessageCPU newMessage)

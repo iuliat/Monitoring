@@ -6,9 +6,9 @@ using System.Net.Sockets;
 namespace CoreAMQP.Messages
 {
     [Serializable]
-    public class MessageCPU : Message
+    public class MessageCPUInit : Message
     {
-        public MessageCPU(List<Dictionary<String, Object>> Payload) : base(typeof(MessageCPU), Payload)
+        public MessageCPUInit(Dictionary<String, Object> Payload) : base(typeof(MessageCPUInit), Payload)
         {
         }
     }

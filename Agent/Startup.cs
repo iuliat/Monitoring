@@ -25,10 +25,10 @@ namespace AgentAPI
                 //Agents[0] = new AgentRAM("user", "Passw0rd", "192.168.71.50");
                 //Agents[1] = new AgentCPU("user", "Passw0rd", "192.168.71.50");
 
-                Agents[0].ChangeReceiveQueueName(typeof(AgentRAM).ToString() + Guid.NewGuid());
+                Agents[0].ChangeReceiveQueueName(typeof(AgentRAM).ToString() + "|" + Guid.NewGuid());
                 Agents[0].ChangeSendQueueName("PrincipalAPI.AMQP.Principal");
 
-                Agents[1].ChangeReceiveQueueName(typeof(AgentCPU).ToString() + Guid.NewGuid());
+                Agents[1].ChangeReceiveQueueName(typeof(AgentCPU).ToString() + "|" + Guid.NewGuid());
                 Agents[1].ChangeSendQueueName("PrincipalAPI.AMQP.Principal");
             }
         }
