@@ -84,12 +84,14 @@ namespace AdminLteMvc.Controllers
             return View(new Host());
         }
 
-        public JsonResult GetCPUsJSON(int hostid)
+        public JsonResult GetCPUsJSON(int hostid, string start, string stop)
         {
-            hostid = 2;
+            // hostid = 2;
+            DateTime StartDate = DateTime.Parse(start);
+            DateTime StopDate = DateTime.Parse(stop);
             PrincipalAPIContext db = new PrincipalAPIContext();
             var searchedHost = db.Hosts.Where(i => i.HostID == hostid).ToArray().First();
-            return Json(db.CPUs.Where(i => i.MetricID == searchedHost.MetricID).Select(i => i.Value).ToList(), JsonRequestBehavior.AllowGet);
+            return Json(db.CPUs.Where(i => i.MetricID == searchedHost.MetricID).Where(i => i.Date >= StartDate).Where(i => i.Date <= StopDate).Select(i => i.Value).ToList(), JsonRequestBehavior.AllowGet);
         }
 
 

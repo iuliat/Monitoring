@@ -173,25 +173,41 @@ namespace PrincipalAPI.AMQP
 
         public Message Receive(MessageRAM newMessage)
         {
-            List<Dictionary<String, Object>> CollectedCPU = newMessage.Payload as List<Dictionary<String, Object>>;
-            StringBuilder Value = new StringBuilder();
-            Value.Append("{ ");
-            foreach (Dictionary<String, Object> InstanceCPU in CollectedCPU)
+            VMStorage Database = new VMStorage();
+
+            List<Dictionary<String, Object>> CollectedRAM = newMessage.Payload as List<Dictionary<String, Object>>;
+            StringBuilder ValueString = new StringBuilder();
+            ValueString.Append("{ ");
+            foreach (Dictionary<String, Object> InstanceRAM in CollectedRAM)
             {
-                Value.Append("{ ");
-                Value.Append("Value: ");
-                Value.Append((Int32)Convert.ToSingle(InstanceCPU["Value"]) + "%");
-                Value.Append(", Date: ");
-                Value.Append(Convert.ToDateTime(InstanceCPU["Date"]));
-                Value.Append(", Category: ");
-                Value.Append(Convert.ToString(InstanceCPU["Category"]));
-                Value.Append(", upperLimit: ");
-                Value.Append(Convert.ToInt32(InstanceCPU["upperLimit"]) + "%");
-                Value.Append(", lowerLimit: ");
-                Value.Append(Convert.ToInt32(InstanceCPU["lowerLimit"]) + "%");
-                Value.Append(" }");
+                Int32 HostId = Convert.ToInt32(InstanceRAM["HostId"]);
+                RAM newRAM = new RAM();
+                Int32 Value = (Int32)Convert.ToSingle(InstanceRAM["Value"]);
+                newRAM.Value = Value;
+                DateTime Date = Convert.ToDateTime(InstanceRAM["Date"]);
+                newRAM.Date = Date;
+                String Category = Convert.ToString(InstanceRAM["Category"]);
+                newRAM.Category = Category;
+                Int32 upperLimit = Convert.ToInt32(InstanceRAM["upperLimit"]);
+                newRAM.upperLimit = upperLimit;
+                Int32 lowerLimit = Convert.ToInt32(InstanceRAM["lowerLimit"]);
+                newRAM.lowerLimit = lowerLimit;
+                Database.AddRAM(HostId, newRAM);
+
+                ValueString.Append("{ ");
+                ValueString.Append("Value: ");
+                ValueString.Append(Value + "MB");
+                ValueString.Append(", Date: ");
+                ValueString.Append(Date);
+                ValueString.Append(", Category: ");
+                ValueString.Append(Category);
+                ValueString.Append(", upperLimit: ");
+                ValueString.Append(upperLimit + "MB");
+                ValueString.Append(", lowerLimit: ");
+                ValueString.Append(lowerLimit + "MB");
+                ValueString.Append(" }");
             }
-            Value.Append(" }");
+            ValueString.Append(" }");
 
             System.Diagnostics.Debug.WriteLine("[ "
                 + this.GetType()
@@ -199,7 +215,7 @@ namespace PrincipalAPI.AMQP
                 + "( Message Type: "
                 + newMessage.GetType()
                 + ", Value: "
-                + Value.ToString()
+                + ValueString.ToString()
                 + " )");
 
             return null;
@@ -207,25 +223,41 @@ namespace PrincipalAPI.AMQP
 
         public Message Receive(MessageCPU newMessage)
         {
+            VMStorage Database = new VMStorage();
+
             List<Dictionary<String, Object>> CollectedCPU = newMessage.Payload as List<Dictionary<String, Object>>;
-            StringBuilder Value = new StringBuilder();
-            Value.Append("{ ");
+            StringBuilder ValueString = new StringBuilder();
+            ValueString.Append("{ ");
             foreach(Dictionary<String, Object> InstanceCPU in CollectedCPU)
             {
-                Value.Append("{ ");
-                Value.Append("Value: ");
-                Value.Append((Int32)Convert.ToSingle(InstanceCPU["Value"]) + "MB");
-                Value.Append(", Date: ");
-                Value.Append(Convert.ToDateTime(InstanceCPU["Date"]));
-                Value.Append(", Category: ");
-                Value.Append(Convert.ToString(InstanceCPU["Category"]));
-                Value.Append(", upperLimit: ");
-                Value.Append(Convert.ToInt32(InstanceCPU["upperLimit"]) + "MB");
-                Value.Append(", lowerLimit: ");
-                Value.Append(Convert.ToInt32(InstanceCPU["lowerLimit"]) + "MB");
-                Value.Append(" }");
+                Int32 HostId = Convert.ToInt32(InstanceCPU["HostId"]);
+                CPU newCPU = new CPU();
+                Int32 Value = (Int32)Convert.ToSingle(InstanceCPU["Value"]);
+                newCPU.Value = Value;
+                DateTime Date = Convert.ToDateTime(InstanceCPU["Date"]);
+                newCPU.Date = Date;
+                String Category = Convert.ToString(InstanceCPU["Category"]);
+                newCPU.Category = Category;
+                Int32 upperLimit = Convert.ToInt32(InstanceCPU["upperLimit"]);
+                newCPU.upperLimit = upperLimit;
+                Int32 lowerLimit = Convert.ToInt32(InstanceCPU["lowerLimit"]);
+                newCPU.lowerLimit = lowerLimit;
+                Database.AddCPU(HostId, newCPU);
+
+                ValueString.Append("{ ");
+                ValueString.Append("Value: ");
+                ValueString.Append(Value + "%");
+                ValueString.Append(", Date: ");
+                ValueString.Append(Date);
+                ValueString.Append(", Category: ");
+                ValueString.Append(Category);
+                ValueString.Append(", upperLimit: ");
+                ValueString.Append(upperLimit + "%");
+                ValueString.Append(", lowerLimit: ");
+                ValueString.Append(lowerLimit + "%");
+                ValueString.Append(" }");
             }
-            Value.Append(" }");
+            ValueString.Append(" }");
 
             System.Diagnostics.Debug.WriteLine("[ "
                 + this.GetType()
@@ -233,7 +265,7 @@ namespace PrincipalAPI.AMQP
                 + "( Message Type: "
                 + newMessage.GetType()
                 + ", Value: "
-                + Value.ToString()
+                + ValueString.ToString()
                 + " )");
 
             return null;

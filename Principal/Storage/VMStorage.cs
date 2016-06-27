@@ -69,5 +69,20 @@ namespace PrincipalAPI.Storage
             return h.GetHostByHostname(hostname).Queryable.First();
         }
 
+        public void AddRAM(int HostID, RAM newRAM)
+        {
+            RAMsController r = new RAMsController();
+
+            newRAM.MetricID =  new HostsController().GetHost(HostID).Queryable.First().MetricID;
+            r.Post(newRAM);
+        }
+
+        public void AddCPU(int HostID, CPU newCPU)
+        {
+            CPUsController r = new CPUsController();
+
+            newCPU.MetricID = new HostsController().GetHost(HostID).Queryable.First().MetricID;
+            r.Post(newCPU);
+        }
     }
 }
