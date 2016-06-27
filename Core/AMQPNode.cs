@@ -53,6 +53,11 @@ namespace CoreAMQP
 
             return DeserializedObject;
         }
+
+        public static String GetHostName()
+        {
+            return Dns.GetHostName();
+        }
         #endregion
 
         #region Constructors

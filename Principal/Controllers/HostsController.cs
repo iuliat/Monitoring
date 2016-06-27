@@ -46,6 +46,15 @@ namespace PrincipalAPI.Controllers
             return SingleResult.Create(db.Hosts.Where(host => host.HostID == key));
         }
 
+        [EnableQuery]
+        public SingleResult<Host> GetHostByHostname([FromODataUri] string hostname)
+        {
+            SingleResult < Host > Result = SingleResult.Create(db.Hosts.Where(host => host.Hostname == hostname));
+
+            return SingleResult.Create(db.Hosts.Where(host => host.Hostname == hostname));
+        }
+
+
         // PUT: odata/Hosts(5)
         public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<Host> patch)
         {

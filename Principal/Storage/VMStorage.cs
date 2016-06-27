@@ -62,6 +62,12 @@ namespace PrincipalAPI.Storage
             return newMetric;
         }
 
+        public Host GetHostByHostname(string hostname)
+        {
+            HostsController h = new HostsController();
+
+            return h.GetHostByHostname(hostname).Queryable.First();
+        }
 
     }
 }

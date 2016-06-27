@@ -1,6 +1,7 @@
 ﻿using CoreAMQP;
 using CoreAMQP.Messages;
 using PrincipalAPI.Models;
+using PrincipalAPI.Storage;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -93,11 +94,23 @@ namespace PrincipalAPI.AMQP
 
         public Message Receive(MessageRAMInit newMessage)
         {
+            VMStorage Database = new VMStorage();
+
             Dictionary<String, Object> ReceivedPayload = newMessage.Payload as Dictionary<String, Object>;
             String HostName = Convert.ToString(ReceivedPayload["HostName"]);
+            //String IP = Convert.ToString(ReceivedPayload["IP"]);
             String AgentReceiveQueueName = Convert.ToString(ReceivedPayload["ReplyTo"]);
-            //Lookup HostId, upperLimit, LowerLimit for HostName
-            Int32 HostId = 1;
+
+            Host AgentHost = Database.GetHostByHostname(HostName);
+            if(AgentHost == null)
+            {
+                AgentHost = new Host();
+                AgentHost.Hostname = HostName;
+                //AgentHost.HostIP = IP;
+                Database.AddNewVM(AgentHost);
+            }
+            Int32 HostId = Database.GetHostByHostname(HostName).HostID;
+
             Int32 upperLimit = 30000;
             Int32 lowerLimit = 0;
 
@@ -121,11 +134,22 @@ namespace PrincipalAPI.AMQP
 
         public Message Receive(MessageCPUInit newMessage)
         {
+            VMStorage Database = new VMStorage();
+
             Dictionary<String, Object> ReceivedPayload = newMessage.Payload as Dictionary<String, Object>;
             String HostName = Convert.ToString(ReceivedPayload["HostName"]);
+            //String IP = Convert.ToString(ReceivedPayload["IP"]);
             String AgentReceiveQueueName = Convert.ToString(ReceivedPayload["ReplyTo"]);
-            //Lookup HostId, upperLimit, LowerLimit for HostName
-            Int32 HostId = 1;
+
+            Host AgentHost = Database.GetHostByHostname(HostName);
+            if (AgentHost == null)
+            {
+                AgentHost = new Host();
+                AgentHost.Hostname = HostName;
+                //AgentHost.HostIP = IP;
+                Database.AddNewVM(AgentHost);
+            }
+            Int32 HostId = Database.GetHostByHostname(HostName).HostID;
             Int32 upperLimit = 100;
             Int32 lowerLimit = 0;
 

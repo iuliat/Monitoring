@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AgentAPI.AMQP;
 using System.Timers;
 using CoreAMQP.Messages;
+using CoreAMQP;
 
 namespace AgentAPI.Agents
 {
@@ -41,7 +42,7 @@ namespace AgentAPI.Agents
             base.OpenSender();
 
             Dictionary<String, Object> Payload = new Dictionary<String, Object>();
-            Payload.Add("HostName", "127.0.0.1");
+            Payload.Add("HostName", AMQPNode.GetHostName());
             Payload.Add("ReplyTo", this.ReceiveQueueName);
 
             MessageCPUInit CPUInit = new MessageCPUInit(Payload);
