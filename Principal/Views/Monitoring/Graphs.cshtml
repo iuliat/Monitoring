@@ -75,15 +75,17 @@
         stopDate.setSeconds(startDate.getSeconds() - 10);
 
         function getCPUData() {
+        hostaID = $( "#selectedHost option:selected" )[0];
+        hostID = hostaID.value;
 
 			if (data.length > 0)
 				data = data.slice(1);
 
         var cpuValues=[];
 
-        if(oldHostID != ($( "#selectedHost option:selected" )[0]).value)
+        if(oldHostID != hostID)
         {
-            oldHostID = ($( "#selectedHost option:selected" )[0]).value;
+            oldHostID = hostID;
             stopDate = new Date();
             stopDate.setMinutes(startDate.getMinutes() - 2);
             stopDate.setSeconds(startDate.getSeconds() - 10);
@@ -94,7 +96,7 @@
         stopDate = new Date();
         stopDate.setSeconds(stopDate.getSeconds() - 10);
         $.ajax({
-                url: 'http://localhost:14607/Monitoring/GetCPUsJSON?hostid='+ ($( "#selectedHost option:selected" )[0]).value + "&start=" + (startDate.toISOString()) + "&stop=" + (stopDate.toISOString()),
+                url: 'http://localhost:14607/Monitoring/GetCPUsJSON?hostid='+ hostID + "&start=" + (startDate.toISOString()) + "&stop=" + (stopDate.toISOString()),
                 dataType: 'json',
                 type: 'GET',
                 contentType: 'pplication/x-www-form-urlencoded; charset=utf-8',
@@ -144,7 +146,7 @@
 
 		var plot = $.plot("#placeholder", [ getCPUData() ], {
 			series: {
-				shadowSize: 0	// Drawing is faster without shadows
+				shadowSize: 0,	// Drawing is faster without shadows
 			},
 			yaxis: {
 				min: -5,
@@ -155,7 +157,6 @@
 			},
             "lines": {"show": "true"},
             "points": {"show": "true"},
-            clickable:true,hoverable: true
 		});
 
 		function update() {
