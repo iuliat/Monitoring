@@ -19,7 +19,7 @@ namespace AgentAPI.AMQP
     public abstract class Agent : VMMonitorNode
     {
         public static readonly Double DefaultIntervalCollect = 1000D;
-        public static readonly Double DefaultIntervalTransmit = 10000D;
+        public static readonly Double DefaultIntervalTransmit = 5000D;
 
         private Timer TriggerCollect;
         private Timer TriggerTransmit;

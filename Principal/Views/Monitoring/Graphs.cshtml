@@ -66,19 +66,35 @@
 		// be fetched from a server
 
 		var data = [],
-			totalPoints = 100;
+			totalPoints = 200;
 
-		function getCPUData() {
+        var oldHostID = hostID;
+        var startDate = new Date();
+        var stopDate = new Date();
+        stopDate.setMinutes(startDate.getMinutes() - 2);
+        stopDate.setSeconds(startDate.getSeconds() - 10);
+
+        function getCPUData() {
 
 			if (data.length > 0)
 				data = data.slice(1);
 
-			// Do a random walk
         var cpuValues=[];
-       // a=[1,2,3,4,5,45,44,33,22,12]
 
+        if(oldHostID != ($( "#selectedHost option:selected" )[0]).value)
+        {
+            oldHostID = ($( "#selectedHost option:selected" )[0]).value;
+            stopDate = new Date();
+            stopDate.setMinutes(startDate.getMinutes() - 2);
+            stopDate.setSeconds(startDate.getSeconds() - 10);
+            data = [];
+        }
+
+        startDate = stopDate;
+        stopDate = new Date();
+        stopDate.setSeconds(stopDate.getSeconds() - 10);
         $.ajax({
-                url: 'http://localhost:14607/Monitoring/GetCPUsJSON?hostid='+ ($( "#selectedHost option:selected" )[0]).value + "&start=" + new Date($.now() - 100000).toUTCString() + "&stop=" + new Date($.now()).toUTCString(),
+                url: 'http://localhost:14607/Monitoring/GetCPUsJSON?hostid='+ ($( "#selectedHost option:selected" )[0]).value + "&start=" + (startDate.toISOString()) + "&stop=" + (stopDate.toISOString()),
                 dataType: 'json',
                 type: 'GET',
                 contentType: 'pplication/x-www-form-urlencoded; charset=utf-8',
@@ -112,7 +128,7 @@
 
 		// Set up the control widget
 
-		var updateInterval = 400;
+		var updateInterval = 1000;
 		$("#updateInterval").val(updateInterval).change(function () {
 			var v = $(this).val();
 			if (v && !isNaN(+v)) {
@@ -135,8 +151,11 @@
 				max: 105
 			},
 			xaxis: {
-				show: false
-			}
+                show: false
+			},
+            "lines": {"show": "true"},
+            "points": {"show": "true"},
+            clickable:true,hoverable: true
 		});
 
 		function update() {
