@@ -147,6 +147,8 @@ namespace CoreAMQP
                 + this.BrokerAddress
                 + ", User: "
                 + this.User
+                + ", Receive Queue: "
+                + this.ReceiveQueueName
                 + " )");
         }
 
@@ -169,6 +171,8 @@ namespace CoreAMQP
                 + this.BrokerAddress
                 + ", User: "
                 + this.User
+                + ", Send Queue: "
+                + this.SendQueueName
                 + " )");
         }
 
@@ -214,6 +218,8 @@ namespace CoreAMQP
                     + this.BrokerAddress
                     + ", User: "
                     + this.User
+                    + ", Receive Queue: "
+                    + this.ReceiveQueueName
                     + " )");
             }
             catch (Exception /*Ignored*/)
@@ -236,6 +242,8 @@ namespace CoreAMQP
                     + this.BrokerAddress
                     + ", User: "
                     + this.User
+                    + ", Send Queue: "
+                    + this.SendQueueName
                     + " )");
             }
             catch (Exception /*Ignored*/)

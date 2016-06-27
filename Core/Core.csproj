@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Messages\MessageCPUInit.cs" />
+    <Compile Include="Messages\MessageRAMInit.cs" />
     <Compile Include="VMMonitorNode.cs" />
     <Compile Include="AMQPNode.cs" />
     <Compile Include="Messages\EstablishedCommunicationMessage.cs" />

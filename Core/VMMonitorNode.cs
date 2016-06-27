@@ -119,7 +119,8 @@ namespace CoreAMQP
         public void Send(Message newMessage)
         {
             IBasicProperties SendProperties = ChannelSend.CreateBasicProperties();
-            SendProperties.AppId = this.GetType().ToString();
+            // SendProperties.AppId = this.GetType().ToString();
+            SendProperties.AppId = this.ReceiveQueueName;
             SendProperties.MessageId = Guid.NewGuid().ToString();
             SendProperties.ReplyTo = this.ReceiveQueueName;
             SendProperties.CorrelationId = this.SendQueueName;

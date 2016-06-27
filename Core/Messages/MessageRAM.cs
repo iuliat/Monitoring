@@ -8,7 +8,7 @@ namespace CoreAMQP.Messages
     [Serializable]
     public class MessageRAM : Message
     {
-        public MessageRAM(List<Single> Payload) : base(typeof(MessageRAM), Payload)
+        public MessageRAM(List<Dictionary<String, Object>> Payload) : base(typeof(MessageRAM), Payload)
         {
         }
     }
