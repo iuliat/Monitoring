@@ -157,8 +157,8 @@ namespace AgentAPI.AMQP
 
         public override Boolean Filter(BasicDeliverEventArgs Event)
         {
-            if (Event.BasicProperties.AppId != "PrincipalAPI.AMQP.Principal")
-                return true;
+            // if (Event.BasicProperties.AppId != "PrincipalAPI.AMQP.Principal")
+            //     return true;
 
             return false;
         }

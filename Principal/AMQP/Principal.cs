@@ -156,15 +156,15 @@ namespace PrincipalAPI.AMQP
             {
                 Value.Append("{ ");
                 Value.Append("Value: ");
-                Value.Append((Int32)Convert.ToSingle(InstanceCPU["Value"]));
+                Value.Append((Int32)Convert.ToSingle(InstanceCPU["Value"]) + "%");
                 Value.Append(", Date: ");
                 Value.Append(Convert.ToDateTime(InstanceCPU["Date"]));
                 Value.Append(", Category: ");
                 Value.Append(Convert.ToString(InstanceCPU["Category"]));
                 Value.Append(", upperLimit: ");
-                Value.Append(Convert.ToInt32(InstanceCPU["upperLimit"]));
+                Value.Append(Convert.ToInt32(InstanceCPU["upperLimit"]) + "%");
                 Value.Append(", lowerLimit: ");
-                Value.Append(Convert.ToInt32(InstanceCPU["lowerLimit"]));
+                Value.Append(Convert.ToInt32(InstanceCPU["lowerLimit"]) + "%");
                 Value.Append(" }");
             }
             Value.Append(" }");
@@ -190,15 +190,15 @@ namespace PrincipalAPI.AMQP
             {
                 Value.Append("{ ");
                 Value.Append("Value: ");
-                Value.Append((Int32)Convert.ToSingle(InstanceCPU["Value"]));
+                Value.Append((Int32)Convert.ToSingle(InstanceCPU["Value"]) + "MB");
                 Value.Append(", Date: ");
                 Value.Append(Convert.ToDateTime(InstanceCPU["Date"]));
                 Value.Append(", Category: ");
                 Value.Append(Convert.ToString(InstanceCPU["Category"]));
                 Value.Append(", upperLimit: ");
-                Value.Append(Convert.ToInt32(InstanceCPU["upperLimit"]));
+                Value.Append(Convert.ToInt32(InstanceCPU["upperLimit"]) + "MB");
                 Value.Append(", lowerLimit: ");
-                Value.Append(Convert.ToInt32(InstanceCPU["lowerLimit"]));
+                Value.Append(Convert.ToInt32(InstanceCPU["lowerLimit"]) + "MB");
                 Value.Append(" }");
             }
             Value.Append(" }");
@@ -225,8 +225,8 @@ namespace PrincipalAPI.AMQP
 
         public override Boolean Filter(BasicDeliverEventArgs Event)
         {
-            if (Event.BasicProperties.AppId == "PrincipalAPI.AMQP.Principal")
-                return true;
+            // if (Event.BasicProperties.AppId == "PrincipalAPI.AMQP.Principal")
+            //     return true;
 
             return false;
         }
